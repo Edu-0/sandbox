@@ -32,3 +32,17 @@ def overflow(binary): # A default function
 
 y = 0b11011011 # 8 bits, one bit overflowed
 print(overflow(y))
+
+m = 0b00011011 # AES irreducible binary
+
+# Doing 1 SL:
+of = overflow(y)
+y = y << 1
+# We then remove the MSB, because AES works with 8 bits. The easiest way is:
+y = y & 0xff # y AND 11111111, everything beyond that will be 0, removing the MSB
+print(bin(y)) # Output: 0b10110110
+
+if of: # Reducing y to m (the irreducible)
+    y ^= m # 10110110 XOR 00011011 = 10101101
+
+print(bin(y)) # Output: 0b10101101, same answer as before
