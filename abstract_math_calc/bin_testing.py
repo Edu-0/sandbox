@@ -42,7 +42,7 @@ y = y << 1
 y = y & 0xff # y AND 11111111, everything beyond that will be 0, removing the MSB
 print(bin(y)) # Output: 0b10110110
 
-if of: # Reducing y to m (the irreducible)
+if of == bin(1)[2:]: # Reducing y to m (the irreducible)
     y ^= m # 10110110 XOR 00011011 = 10101101
 
 print(bin(y)) # Output: 0b10101101, same answer as before
