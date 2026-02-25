@@ -4,10 +4,13 @@ def gcd(a, b):
     if b == 0:
         return a
     return gcd(b, a % b)
+
+
 a1 = 1005
 b1 = 105
 answer = gcd(a1, b1)
 print(f"gcd({a1}, {b1}) = {answer}" if (answer != 1) else f"Both numbers ({a1}, {b1}) are relatively prime: {answer}")
+
 
 # Extended Euclid:
 
@@ -47,15 +50,16 @@ print(f"gcd({a1}, {b1}) = {answer}" if (answer != 1) else f"Both numbers ({a1}, 
 
 def egcd(a, b):
     if b == 0:
-        return a, 1, 0 # After the GCD is found, it's put on the first value of the return that won't change
+        return a, 1, 0  # After the GCD is found, it's put on the first value of the return that won't change
 
-    g, x1, y1 = egcd(b, a % b) # Pushes a and b onto the stack to be used later
+    g, x1, y1 = egcd(b, a % b)  # Pushes a and b onto the stack to be used later
 
     # After the GCD is found, it's time to do the extended part, which begins to bring past values of a and b, besides new x1, y1 calculated starting from a, 1, 0
-    x = y1 # Coefficient of "a"
-    y = x1 - (a//b) * y1 # Coefficient of "b"
+    x = y1  # Coefficient of "a"
+    y = x1 - (a // b) * y1  # Coefficient of "b"
 
-    return g, x, y # Returns x and y as in a*x + b*y
+    return g, x, y  # Returns x and y as in a*x + b*y
+
 
 print(egcd(1180, 482))
 

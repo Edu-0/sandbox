@@ -13,14 +13,15 @@ def gf_mul(f, g, m):
             result ^= temp  # Sum to the final result with an XOR
     return bin(result)
 
+
 f = 0b01010111
 g = 0b10000011
 
-m = 0b00011011 # Irreducible for GF(2^8)
+m = 0b00011011  # Irreducible for GF(2^8)
 
 # + -> Sum
 
-sum_bin = f^g
+sum_bin = f ^ g
 print(f"Sum of {bin(f)} + {bin(g)} = {bin(sum_bin)}")
 
 # * -> Multiplication
@@ -45,8 +46,10 @@ q = 0, then it'll be incrementing while the loop is dividing
 r = a, to keep the value of a intact, as it'll be used
 """
 
+
 def deg(a, b):
     pass
+
 
 def gf2_div(a, b):
     pass
