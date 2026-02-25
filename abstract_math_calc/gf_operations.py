@@ -26,3 +26,27 @@ print(f"Sum of {bin(f)} + {bin(g)} = {bin(sum_bin)}")
 # * -> Multiplication
 
 print(f"Multiplication of {bin(f)} + {bin(g)} = {gf_mul(f, g, m)}")
+
+# Polynomial division
+
+"""
+How does division works?
+I take the difference in degrees between two dividing binaries
+I shift left b the same amount of times as the difference
+XOR is applied between the value shifted and a
+
+q |= 1 << diff, uses OR to make the binary quotient
+r ^= b << diff, uses XOR because I need to subtract in GF(2), and 1 + 1 will get 0
+
+All while degree of a is >= degree of b
+
+Starting variables:
+q = 0, then it'll be incrementing while the loop is dividing
+r = a, to keep the value of a intact, as it'll be used
+"""
+
+def deg(a, b):
+    pass
+
+def gf2_div(a, b):
+    pass
