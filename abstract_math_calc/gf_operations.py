@@ -3,8 +3,7 @@ def gf_mul(f, g, m):
     for i in range(8):
         if (g >> i) & 1:  # If the i th value of g is 1 (Dislocation done through shift right, from MSB to LSB)
             temp = f  # f(x) will be used more times, so I save on a temp
-            for _ in range(
-                    i):  # Depending on the position of the 1 in the binary number, it'll do shift lefts for the same number as position
+            for _ in range(i):  # Depending on the position of the 1 in the binary number, it'll do shift lefts for the same number as position
                 of = bin((temp & 0x80) >> 7)[2:]  # Verifying if there will be an overflow each time
                 temp = (temp << 1) & 0xFF  # I cap the maximum size to 8 bits and shift left
                 if of == "1":
