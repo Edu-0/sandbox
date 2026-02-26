@@ -18,3 +18,6 @@ This is a **sandbox repository** - a space for:
 - 💡 Code snippets and one-off scripts
 
 Code here may be rough, incomplete, or purely educational. When projects mature, they graduate to dedicated repositories.
+
+## Graduated Codes
+- Abstract Algebra codes → [Abstract Algebra Repository](https://github.com/Edu-0/abstract-algebra)
