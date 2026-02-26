@@ -90,7 +90,9 @@ def gf2_div(a, b):
         shift = deg(r) - deg(b)
         q |= (1 << shift)
         r ^= (b << shift)
-    return bin(q), bin(r)
+        if r == 0:
+            break
+    return q, r
 
 
 a = 0b10000011
