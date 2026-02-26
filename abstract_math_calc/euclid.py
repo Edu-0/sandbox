@@ -14,7 +14,6 @@ print(f"gcd({a1}, {b1}) = {answer}" if (answer != 1) else f"Both numbers ({a1}, 
 
 # Extended Euclid:
 
-
 #   How do we get to the formula?
 #
 #   It's a derived formula from the original
@@ -62,7 +61,3 @@ def egcd(a, b):
 
 
 print(egcd(1180, 482))
-
-# Euclid with Binary GF(2^8)
-
-# Multiplicative Inverse through Extended Euclid
