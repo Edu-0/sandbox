@@ -9,6 +9,9 @@
 import secrets
 import numpy as np
 
+DATAWORD_SIZE = 64
+CODEWORD_SIZE = 72
+PARITY_BITS = 7
 
 def is_pow_of_2(n):
     return n > 0 and (n & (n-1)) == 0
@@ -21,10 +24,10 @@ def calculate_parity_bits(arr):
     # -> Isn't a power of 2 / parity position
     # -> The i th bit of the position number is = 1.
 
-    for k in range(0, 7):
+    for k in range(0, PARITY_BITS):
         p = pow(2, k)
         parity_bit = 0
-        for i in range(1, 73):
+        for i in range(1, CODEWORD_SIZE+1):
             if i == p:
                 continue
             if ((i >> k) & 1) == 1:
@@ -33,20 +36,20 @@ def calculate_parity_bits(arr):
 
     # Calculating Overall Parity:
     overall = 0
-    for i in range(72):
+    for i in range(CODEWORD_SIZE):
         overall ^= arr[i]
-    arr[71] = overall
+    arr[CODEWORD_SIZE-1] = overall
 
     return arr
 
 
 def data_to_codeword(arr):
     # Generating the codeword array
-    cd_arr = np.zeros(72, dtype="u1")
+    cd_arr = np.zeros(CODEWORD_SIZE, dtype="u1")
 
     # Filling codeword array
     data_i = 0
-    for i in range(1, 73):
+    for i in range(1, CODEWORD_SIZE+1):
         if not is_pow_of_2(i):
             cd_arr[i - 1] = arr[data_i]
             data_i += 1
@@ -57,7 +60,7 @@ def data_to_codeword(arr):
 
 if __name__ == "__main__":
     # Generating the first 64 bits that will be used
-    data_arr = np.fromiter(format(secrets.randbits(64), '064b'), dtype="u1")
+    data_arr = np.fromiter(format(secrets.randbits(DATAWORD_SIZE), f'0{DATAWORD_SIZE}b'), dtype="u1")
 
     codeword = data_to_codeword(data_arr)
 
