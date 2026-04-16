@@ -9,10 +9,29 @@
 import secrets
 import numpy as np
 
-data = secrets.randbits(64)
+def is_pow_of_2(n):
+    return n > 0 and (n & (n-1)) == 0
 
-bin_str = format(data, '064b')
-arr = np.fromiter(bin_str, dtype="u1")
+# Generating the first 64 bits that will be used
+# bin_str = format(secrets.randbits(64), '064b')
+# arr = np.fromiter(bin_str, dtype="u1")
 
+arr = np.ones(64, dtype="u1")
 print(arr)
-print(arr.shape[0])
+
+# Generating the codeword array
+cd_arr = np.zeros(72, dtype="u1")
+print(cd_arr)
+
+# Filling codeword array
+data_i = 0
+for i in range(0, 73):
+    if not is_pow_of_2(i):
+        cd_arr[i] = arr[data_i]
+        data_i += 1
+        if data_i == 64: break
+
+print(cd_arr)
+
+for index in np.ndindex(cd_arr.shape):
+    print(index, cd_arr[index])
