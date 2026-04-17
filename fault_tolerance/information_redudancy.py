@@ -61,10 +61,13 @@ def data_to_codeword(arr):
 
 
 def create_parity_check_matrix():
-    for j in range(1, CODEWORD_SIZE+1):
+    for j in range(1, CODEWORD_SIZE):
         # For j = 5 (0000101) and 7 parity bits, I separate 1 bit for each K. Binary = [1,0,1,0,0,0,0]
         # Does it 72 times as there are 72 columns and all need to receive the binary version
-        binary = [(j >> k) & 1 for k in range(PARITY_BITS)]
+        if j < CODEWORD_SIZE:
+            binary = [(j >> k) & 1 for k in range(PARITY_BITS)] # Verifies their specific line/characteristic
+        else:
+            binary = [1]*PARITY_BITS # It'll serve as a verifying column that participates on every equation, a general supervisor
         # Each column of the matrix receives the binary of j, as it has the same height as number os lines
         H[:, j-1] = binary
 
@@ -78,8 +81,22 @@ def create_parity_check_matrix():
         #  [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1]]
         # As it can be seen, the first column is = 1, 1000000 | The last column: 1001000, which is equal to 72
 
-def ecc():
-    pass
+
+def mat_vet_mul(mat_a, vet_b):
+    vet_res = np.zeros(mat_a.shape[0], dtype=int)
+    for i in range(mat_a.shape[0]):
+        for j in range(vet_b.shape[0]):
+            vet_res[i] ^= mat_a[i][j] & vet_b[j]
+    return vet_res
+
+
+def ecc(h, cd):
+    vet_error = mat_vet_mul(h, cd)
+
+    # WIP
+    # Invert the matrix to find the position, locate the error on bits and flip it.
+
+    return vet_error
 
 
 if __name__ == "__main__":
@@ -96,4 +113,6 @@ if __name__ == "__main__":
         print(index[0] + 1, codeword[index])
 
     create_parity_check_matrix()
-    print(H)
+
+    error_vet = ecc(H, codeword)
+    print(error_vet)
