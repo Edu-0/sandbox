@@ -6,6 +6,9 @@
 # The first 7 bits locate and correct 1 wrong bit.
 # Allows detecting 2 wrong bits.
 
+class ECCError(Exception):
+    pass
+
 import secrets
 import numpy as np
 
@@ -91,12 +94,31 @@ def mat_vet_mul(mat_a, vet_b):
 
 
 def ecc(h, cd):
-    vet_error = mat_vet_mul(h, cd)
+    syndrome_vec = mat_vet_mul(h, cd)
+    global_parity = np.bitwise_xor.reduce(cd) # Checking global parity
+    syndrome_value = int("".join(map(str, syndrome_vec[::-1])), 2)
 
-    # WIP
-    # Invert the matrix to find the position, locate the error on bits and flip it.
+    if global_parity == 0 and syndrome_value == 0: # Everything is correct
+        return cd, "OK, No Error Found!"
 
-    return vet_error
+    if global_parity == 1 and syndrome_value != 0: # Global Parity - error | Codeword - wrong
+        error_index = syndrome_value - 1
+        cd[error_index] ^= 1
+        return cd, f"Codeword Corrected! - Error found on pos. {syndrome_value}" # Global parity bit error caused by a codeword error
+
+    if global_parity == 1 and syndrome_value == 0: # Global Parity - error | Codeword - correct
+        cd[-1] ^= 1
+        return cd, "Global Parity Bit Corrected!" # Corrects global parity bit
+
+    if global_parity == 0 and syndrome_value != 0:
+        raise ECCError("Multiple errors detected - Corrupted data (SECDED)") # Global parity bit is correct while codeword error, 2 errors detected.
+
+
+def print_codeword(cd):
+    for i, val in enumerate(cd):
+        print(f"{i + 1:2d} - {val}", end="\t")
+        if (i + 1) % 9 == 0:
+            print()
 
 
 if __name__ == "__main__":
@@ -107,12 +129,14 @@ if __name__ == "__main__":
 
     codeword = calculate_parity_bits(codeword)
 
-    print(f"Codeword Array Finished: \n{codeword}")
-
-    for index in np.ndindex(codeword.shape):
-        print(index[0] + 1, codeword[index])
-
     create_parity_check_matrix()
 
-    error_vet = ecc(H, codeword)
-    print(error_vet)
+    codeword[7] ^= 1
+
+    try:
+        ecc_result, msg = ecc(H, codeword)
+        print(f"\n-> Codeword:")
+        print_codeword(ecc_result)
+        print(msg)
+    except ECCError as e:
+        print(e)
