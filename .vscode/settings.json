@@ -1,0 +1,10 @@
+{
+  "code-runner.runInTerminal": true,
+  "code-runner.showExecutionMessage": false,
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.executorMap": {
+    "cpp": "g++ \"$fileName\" -o \"$fileNameWithoutExt\"; if ($?) { .\\\"$fileNameWithoutExt\" }"
+  },
+  "python.terminal.activateEnvironment": false
+}
